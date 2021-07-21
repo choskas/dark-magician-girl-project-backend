@@ -36,7 +36,7 @@ app.use(bodyParser.json());
 app.use(
   cors({
     credentials: false,
-    origin: ['http://localhost:3000', 'http://localhost:5000', 'https://dark-magician-girl-project.vercel.app/', 'https://dark-magician-girl-project.vercel.app/login'],
+    origin: ['http://localhost:3000', 'http://localhost:5000', 'https://dark-magician-girl-project.vercel.app'],
   }),
 );
 
