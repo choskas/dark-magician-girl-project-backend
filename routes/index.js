@@ -9,6 +9,7 @@ router.post('/signup', async (req,res,next) =>{
     const user = await User.register(req.body, req.body.password)
     res.status(201).json({ user })
     } catch (error) {
+      console.log(error)
      res.status(500).json({message: 'El usuario ya existe, haz login!'})
     }
   })

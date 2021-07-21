@@ -12,6 +12,11 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    facebookId: {
+      type: String,
+      required: false,
+      unique: true,
+    },
     image:{
       type: String,
       default: 'https://www.uic.mx/posgrados/files/2018/05/default-user.png'
