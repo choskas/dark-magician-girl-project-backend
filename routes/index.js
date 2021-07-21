@@ -16,8 +16,14 @@ router.post('/signup', async (req,res,next) =>{
 
 router.post('/login', passport.authenticate('local'), (req,res,next) =>{
     try {
+    if(req.body.facebookId) {
+      const users = User.find();
+      users.find((item) => item.facebookId === req.body.facebookId);
+      res.status(200).json({user})
+    } else {
     const { user } = req 
     res.status(200).json({user})
+    }
     } catch (error) {
         res.status(500).json({message: 'Error en credenciales'})
     }
