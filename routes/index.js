@@ -14,16 +14,32 @@ router.post('/signup', async (req,res,next) =>{
     }
   })
 
-router.post('/login', passport.authenticate('local'), (req,res,next) =>{
+router.post('/signupFacebook', async (req,res,next) =>{
+    try {
+    const user = await User.create(req.body)
+    res.status(201).json({ user })
+    } catch (error) {
+      console.log(error)
+     res.status(500).json({message: 'El usuario ya existe, haz login!'})
+    }
+  })
+
+router.post('/login', passport.authenticate('local'), async (req,res,next) =>{
+    try {
+    const { user } = req 
+    res.status(200).json({email: user.email, name: user.name, image: user.image})
+    } catch (error) {
+        res.status(500).json({message: 'Error en credenciales'})
+    }
+  })
+
+  router.post('/loginFacebook', async (req,res,next) =>{
     try {
     if(req.body.facebookId) {
-      const users = User.find();
-      users.find((item) => item.facebookId === req.body.facebookId);
-      res.status(200).json({user})
-    } else {
-    const { user } = req 
-    res.status(200).json({user})
-    }
+      const users = await User.find();
+      const foundUser = users.find((item) => item.facebookId === req.body.facebookId);
+      res.status(200).json({email: foundUser.email, name: foundUser.name, image: foundUser.image})
+    } 
     } catch (error) {
         res.status(500).json({message: 'Error en credenciales'})
     }
