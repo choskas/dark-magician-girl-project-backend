@@ -7,6 +7,7 @@ const User = require('../models/user')
 router.post('/signup', async (req,res,next) =>{
     try {
     const user = await User.register(req.body, req.body.password)
+    res.header("Access-Control-Allow-Origin", "*");
     res.status(201).json({ user })
     } catch (error) {
       console.log(error)
@@ -17,6 +18,7 @@ router.post('/signup', async (req,res,next) =>{
 router.post('/login', passport.authenticate('local'), (req,res,next) =>{
     try {
     const { user } = req 
+    res.header("Access-Control-Allow-Origin", "*");
     res.status(200).json({user})
     } catch (error) {
         res.status(500).json({message: 'Error en credenciales'})
