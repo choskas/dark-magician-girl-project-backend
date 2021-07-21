@@ -7,7 +7,7 @@ const User = require('../models/user')
 router.post('/signup', async (req,res,next) =>{
     try {
     const user = await User.register(req.body, req.body.password)
-    res.header("Access-Control-Allow-Origin", "*");
+    req.header("Access-Control-Allow-Origin", "*");
     res.status(201).json({ user })
     } catch (error) {
       console.log(error)
