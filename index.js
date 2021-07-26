@@ -11,6 +11,17 @@ const passport = require('./config/passport');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 
+// Middlewares
+app.use(helmet());
+app.disable('x-powered-by');
+app.use(bodyParser.json());
+app.use(
+  cors({
+    credentials: false,
+    origin: ['http://localhost:3000', 'http://localhost:5000', 'https://dark-magician-girl-project.vercel.app'],
+  }),
+);
+
 // MONGO
 const uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_USER_PASSWORD}@cluster0.tl5qv.mongodb.net/${process.env.MONGO_DATABASE_NAME}?retryWrites=true&w=majority`;
 const connectDB = async () => {
@@ -32,6 +43,7 @@ app.use(session({
   secret: process.env.SECRET_KEY,
   resave: false,
   saveUninitialized: true,
+  cookie: {maxAge: 3600000*24*14},
   store: MongoStore.create({
       mongoUrl: uri,
       ttl: 14 * 24 * 60 * 60,
@@ -42,17 +54,6 @@ app.use(session({
 // PASSPORT
 app.use(passport.initialize())
 app.use(passport.session())
-
-// Middlewares
-app.use(helmet());
-app.disable('x-powered-by');
-app.use(bodyParser.json());
-app.use(
-  cors({
-    credentials: false,
-    origin: ['http://localhost:3000', 'http://localhost:5000', 'https://dark-magician-girl-project.vercel.app'],
-  }),
-);
 
 // Middlewares for DDoS and bruteforce attacks
 const limiter = new RateLimit({
