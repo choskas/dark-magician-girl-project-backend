@@ -48,4 +48,12 @@ router.post('/login', passport.authenticate('local'), async (req,res,next) =>{
     }
   })
 
+  router.post('/logout', async (req,res,next) =>{
+    try {
+    req.session.destroy()
+    } catch (error) {
+        res.status(500).json({message: 'Error en credenciales'})
+    }
+  })
+
 module.exports = router;
