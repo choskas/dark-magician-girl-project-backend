@@ -38,6 +38,9 @@ const connectDB = async () => {
 
 connectDB();
 
+// Static
+app.use(express.static(path.join(__dirname, 'public')));
+
 // MONGO SESSION
 app.use(session({
   secret: process.env.SECRET_KEY,
@@ -68,9 +71,6 @@ app.use(limiter);
 app.use(require('./routes/index'));
 // Websocket (si se necesitan)
 app.use(require('./routes/websockets'));
-
-// Static
-app.use(express.static(path.join(__dirname, 'public')));
 
 // Listen server
 app.listen(process.env.PORT || 3001, () => {
