@@ -59,7 +59,7 @@ app.use(session({
   secret: process.env.SECRET_KEY,
   resave: false,
   saveUninitialized: true,
-  cookie: {maxAge: 10000},
+  cookie: {maxAge: 3600000*24*14},
   store: MongoStore.create({
       mongoUrl: uri,
       ttl: 14 * 24 * 60 * 60,
