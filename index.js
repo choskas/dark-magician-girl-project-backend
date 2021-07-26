@@ -41,19 +41,6 @@ connectDB();
 // Static
 app.use(express.static(path.join(__dirname, 'public')));
 
-// MONGO SESSION
-app.use(session({
-  secret: process.env.SECRET_KEY,
-  resave: false,
-  saveUninitialized: true,
-  cookie: {maxAge: 3600000*24*14},
-  store: MongoStore.create({
-      mongoUrl: uri,
-      ttl: 14 * 24 * 60 * 60,
-      autoRemove: 'native'
-  })
-}));
-
 // PASSPORT
 app.use(passport.initialize())
 app.use(passport.session())
@@ -66,6 +53,19 @@ const limiter = new RateLimit({
 });
 
 app.use(limiter);
+
+// MONGO SESSION
+app.use(session({
+  secret: process.env.SECRET_KEY,
+  resave: false,
+  saveUninitialized: true,
+  cookie: {maxAge: 3600000*24*14},
+  store: MongoStore.create({
+      mongoUrl: uri,
+      ttl: 14 * 24 * 60 * 60,
+      autoRemove: 'native'
+  })
+}));
 
 // Routes
 app.use(require('./routes/index'));
