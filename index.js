@@ -7,7 +7,9 @@ const helmet = require('helmet');
 const RateLimit = require('express-rate-limit');
 const app = express();
 const mongoose = require('mongoose');
-const passport = require('./config/passport')
+const passport = require('./config/passport');
+const session = require('express-session');
+const MongoStore = require('connect-mongo');
 
 // MONGO
 const uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_USER_PASSWORD}@cluster0.tl5qv.mongodb.net/${process.env.MONGO_DATABASE_NAME}?retryWrites=true&w=majority`;
@@ -24,6 +26,18 @@ const connectDB = async () => {
 }
 
 connectDB();
+
+// MONGO SESSION
+app.use(session({
+  secret: process.env.SECRET_KEY,
+  resave: false,
+  saveUninitialized: true,
+  store: MongoStore.create({
+      mongoUrl: uri,
+      ttl: 14 * 24 * 60 * 60,
+      autoRemove: 'native'
+  })
+}));
 
 // PASSPORT
 app.use(passport.initialize())
