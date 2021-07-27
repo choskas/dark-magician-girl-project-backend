@@ -83,13 +83,14 @@ router.post('/login', passport.authenticate('local'), async (req,res,next) =>{
         console.log(error)
     }
   })
-
+let id;
   router.get('/auth', (req, res, next) => {
     try {
       console.log(req.user, 'user respuesta')
       let response = 'is not logged in'
       if(req.user) {
         response = 'is login'
+        id = req.user.facebookId
       }
       res.status(301).redirect(process.env.FACEBOOK_APP_URL)
     } catch(error) {
@@ -99,7 +100,7 @@ router.post('/login', passport.authenticate('local'), async (req,res,next) =>{
 
   router.get('/profile', (req, res, next) => {
     try {
-      console.log(req.user, 'user respuesta')
+      console.log(req.user, 'user respuesta', id)
       let response = 'is not logged in'
       if(req.user) {
         response = 'is login'
