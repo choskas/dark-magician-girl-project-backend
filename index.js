@@ -65,7 +65,7 @@ app.use(session({
   secret: process.env.SECRET_KEY,
   resave: false,
   saveUninitialized: false,
-  cookie: {maxAge: 3600000*24*14, sameSite: false},
+  cookie: {maxAge: 3600000*24*14, domain: process.env.FACEBOOK_APP_URL},
   store: MongoStore.create({
       mongoUrl: uri,
       ttl: 14 * 24 * 60 * 60,
