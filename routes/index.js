@@ -55,7 +55,7 @@ router.post('/login', passport.authenticate('local'), async (req,res,next) =>{
 
   router.get('/loginFacebook/callback',
     passport.authenticate('facebook', { successRedirect: '/',
-                                        failureRedirect: '/deckPrice' }));
+                                        failureRedirect: '/login' }));
 
   router.post('/logout', async (req,res,next) =>{
     try {
