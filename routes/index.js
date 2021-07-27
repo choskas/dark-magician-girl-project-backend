@@ -74,9 +74,7 @@ router.post('/login', passport.authenticate('local'), async (req,res,next) =>{
   // });
 
   router.get('/loginFacebook/callback', passport.authenticate('facebook', { successRedirect: process.env.FACEBOOK_APP_URL,
-  failureRedirect: process.env.FACEBOOK_CALLBACK_URL }), (req, res, next) => {
-    console.log(req.user, '<<<<')
-  })
+  failureRedirect: process.env.FACEBOOK_CALLBACK_URL }))
 
   router.post('/logout', async (req,res,next) =>{
     try {
@@ -85,16 +83,6 @@ router.post('/login', passport.authenticate('local'), async (req,res,next) =>{
     } catch (error) {
         res.status(500).json({message: 'Error en credenciales'})
         console.log(error)
-    }
-  })
-
-  router.get('/profile', (req, res , next) => {
-    try {
-    console.log(req.user, 'ola')
-    res.send(200).json({message: req.user})
-    } catch (error) {
-      console.log(error)
-      res.send(500).json({message: error})
     }
   })
   

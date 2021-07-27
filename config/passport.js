@@ -24,6 +24,7 @@ passport.use(new FacebookStrategy({
 }, (accessToken, refreshToken, profile, done) => {
   console.log(profile.id, profile.email, profile)
   User.findOne({facebookId: profile.id}, (err, user) => {
+    console.log(user)
     if (err) return done(err)
     if (user) return done(null, user)
     else {
