@@ -73,6 +73,7 @@ app.use(require('./routes/index'));
 app.use(require('./routes/websockets'));
 
 // Listen server
-app.listen(process.env.PORT || 3001, () => {
-  console.log('listening on port', 3001);
+const PORT = process.env.PORT || 3001;
+app.listen(PORT || 3001, () => {
+  console.log('listening on port ', PORT);
 });
