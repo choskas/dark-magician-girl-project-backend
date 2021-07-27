@@ -54,7 +54,7 @@ router.post('/login', passport.authenticate('local'), async (req,res,next) =>{
   // })
 
   router.get('/loginFacebook/callback',
-    passport.authenticate('facebook', { successRedirect: '/',
+    passport.authenticate('facebook', { successRedirect: '/profile',
                                         failureRedirect: '/login' }));
 
   router.post('/logout', async (req,res,next) =>{
@@ -66,5 +66,18 @@ router.post('/login', passport.authenticate('local'), async (req,res,next) =>{
         console.log(error)
     }
   })
+
+  router.get('/profile', isLoggedIn, function (req, res) {
+    res.render('ola', {
+      user: req.user // get the user out of session and pass to template
+    });
+  });
+  
+
+  const isLoggedIn = (req, res, next) => {
+    if (req.isAuthenticated())
+      return next();
+    res.redirect('/');
+  }
 
 module.exports = router;
