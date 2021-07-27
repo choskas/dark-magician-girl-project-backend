@@ -73,6 +73,10 @@ router.post('/login', passport.authenticate('local'), async (req,res,next) =>{
     }
   })
 
+  router.get('/profile', (req, res, next) => {
+    console.log(req.user)
+  })
+
   router.get('/profile', isLoggedIn, function (req, res) {
     res.render('ola', {
       user: req.user // get the user out of session and pass to template
