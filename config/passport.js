@@ -51,7 +51,8 @@ passport.deserializeUser(function async(obj, cb) {
   console.log(obj, "deseri");
   User.findOne({ facebookId: obj }, (err, user) => {
     console.log(user, "eluser");
-    cb(null, user);
+    if (!err) cb(null, user)
+    if (err) cb(err, null)
   });
 });
 
