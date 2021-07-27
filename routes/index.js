@@ -4,10 +4,8 @@ const passport = require('../config/passport')
 const router = Router();
 const User = require('../models/user');
 
-const isLoggedIn = (req, res, next) => {
-  if (req.isAuthenticated())
-    return next();
-  res.redirect('/');
+const isAuth = (req,res,next) => {
+  req.isAuthenticated() ? next() : res.status(401).json({msg: 'Log in first'})
 }
 
 router.post('/signup', async (req,res,next) =>{
@@ -86,7 +84,7 @@ router.post('/login', passport.authenticate('local'), async (req,res,next) =>{
     }
   })
 
-  router.get('/profile', (req, res, next) => {
+  router.get('/profile', isAuth, (req, res, next) => {
     try {
       let response = 'is not logged in'
       if(req.user) {
