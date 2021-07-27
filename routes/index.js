@@ -59,9 +59,15 @@ router.post('/login', passport.authenticate('local'), async (req,res,next) =>{
   //   }
   // })
 
-  router.get('/loginFacebook/callback',
-    passport.authenticate('facebook', { successRedirect: '/profile',
-                                        failureRedirect: '/login' }));
+  router.get('/loginFacebook/callback', (req, res, next) => {
+    passport.authenticate('facebook', (err, user, info) => {
+      if(err){
+        return nect(err)
+      }
+      console.log(user, err, info)
+      res.redirect('/')
+    })
+  });
 
   router.post('/logout', async (req,res,next) =>{
     try {
