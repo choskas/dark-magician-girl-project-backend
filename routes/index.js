@@ -65,6 +65,9 @@ router.post('/login', passport.authenticate('local'), async (req,res,next) =>{
         return nect(err)
       }
       console.log(user, err, info)
+      req.session.email = user.email
+      req.session.name = user.displayName
+      req.session.image = user.photos[0].value
       res.redirect('/')
     })
   });
