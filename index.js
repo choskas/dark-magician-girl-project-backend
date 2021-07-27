@@ -51,6 +51,7 @@ const limiter = new RateLimit({
 });
 
 app.use(limiter);
+app.set("trust proxy", 1);
 app.use(cookieParser())
 // MONGO SESSION
 app.use(session({
