@@ -15,7 +15,8 @@ const cookieParser = require('cookie-parser');
 // Middlewares
 app.use(helmet());
 app.disable('x-powered-by');
-app.use(bodyParser.json());
+app.use(express.urlencoded({extended: true}));
+app.use(express.json())
 app.use(
   cors({
     credentials: true,
