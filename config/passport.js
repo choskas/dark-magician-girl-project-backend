@@ -17,7 +17,6 @@ passport.deserializeUser(function (obj, done) {
       console.log(err, "err");
     }
   });
-  cb(null, obj);
 });
 
 // passport.use(User.createStrategy());
