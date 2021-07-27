@@ -40,11 +40,7 @@ passport.use(
         console.log(user, "ola <<<<");
         if (err) return done(err);
         if (user)
-          return done(null, {
-            name: user.name,
-            email: user.email,
-            image: user.image,
-          });
+          return done(null, user);
         else {
           var newUser = new User();
           newUser.facebookId = profile.id;
