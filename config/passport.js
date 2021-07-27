@@ -22,9 +22,10 @@ passport.use(
     },
     (accessToken, refreshToken, profile, done) => {
       User.findOne({ facebookId: profile.id }, (err, user) => {
-        if (err) return done(err);
-        if (user) return done(null, user);
-        else {
+        if (err)  done(err);
+        if (user) {
+          done(null, user);
+        } else {
           var newUser = new User();
           newUser.facebookId = profile.id;
           newUser.name = profile.name.givenName;
@@ -33,7 +34,7 @@ passport.use(
 
           newUser.save((err) => {
             if (err) throw err;
-            return done(null, newUser);
+            done(null, newUser);
           });
         }
       });
@@ -42,18 +43,16 @@ passport.use(
 );
 
 passport.serializeUser(function (user, cb) {
-  console.log(user, 'serial')
+  console.log(user, "serial");
   cb(null, user.facebookId);
 });
 
-passport.deserializeUser(function async (obj, cb) {
-  console.log(obj, 'deseri')
-  User.findOne({facebookId: obj}, (err, user) => {
-    console.log(user, 'eluser');
-    cb(null, user)
+passport.deserializeUser(function async(obj, cb) {
+  console.log(obj, "deseri");
+  User.findOne({ facebookId: obj }, (err, user) => {
+    console.log(user, "eluser");
+    cb(null, user);
   });
- 
 });
-
 
 module.exports = passport;
