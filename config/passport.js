@@ -2,28 +2,6 @@ const passport = require("passport");
 const User = require("../models/user");
 const FacebookStrategy = require("passport-facebook").Strategy;
 
-passport.serializeUser(function (user, cb) {
-  console.log(user, 'serial')
-  cb(null, user);
-});
-
-passport.deserializeUser(function (obj, done) {
-  console.log(obj, 'deseri')
-  User.findById(obj._id, function (err, user) {
-    if (!err) {
-      console.log(user, 'el user')
-      done(null, user);
-    } else {
-      done(err, null);
-      console.log(err, 'el err')
-      console.log(err, "err");
-    }
-  });
-});
-
-// passport.use(User.createStrategy());
-// passport.serializeUser(User.serializeUser());
-// passport.deserializeUser(User.deserializeUser());
 passport.use(
   new FacebookStrategy(
     {
@@ -63,20 +41,15 @@ passport.use(
   )
 );
 
-// passport.serializeUser(function (user, done) {
-//   console.log(user, 'serialize')
-//   done(null, user._id);
-// });
-// passport.deserializeUser(function (id, done) {
-//   console.log("pass deserializauser", id);
-//   User.findById(id, function (err, user) {
-//     if (!err) {
-//       done(null, user);
-//     } else {
-//       done(err, null);
-//       console.log(err, "err");
-//     }
-//   });
-// });
+passport.serializeUser(function (user, cb) {
+  console.log(user, 'serial')
+  cb(null, user);
+});
+
+passport.deserializeUser(function (id, cb) {
+  console.log(id, 'deseri')
+  cb(null, id)
+});
+
 
 module.exports = passport;
