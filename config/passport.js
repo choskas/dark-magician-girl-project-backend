@@ -48,7 +48,7 @@ passport.serializeUser(function (user, cb) {
 
 passport.deserializeUser(function async (obj, cb) {
   console.log(obj, 'deseri')
-  User.find({facebookId: obj.facebookId}, (err, user) => {
+  User.findOne({facebookId: obj.facebookId}, (err, user) => {
     console.log(user, 'eluser');
     cb(null, user)
   });
