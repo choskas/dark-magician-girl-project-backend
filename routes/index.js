@@ -89,7 +89,7 @@ router.post('/login', passport.authenticate('local'), async (req,res,next) =>{
       console.log(req.user, 'user respuesta')
       let response = 'is not logged in'
       if(req.user) {
-        res.redirect(`${process.env.FACEBOOK_APP_URL}/profile`)
+        res.redirect(`${process.env.FACEBOOK_APP_URL}`)
         response = 'is login'
       }
       res.status(200).json({message: response})
