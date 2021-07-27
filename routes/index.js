@@ -59,19 +59,22 @@ router.post('/login', passport.authenticate('local'), async (req,res,next) =>{
   //   }
   // })
 
-  router.get('/loginFacebook/callback', (req, res, next) => {
-    passport.authenticate('facebook', (err, user, info) => {
-      if(err){
-        res.redirect('/login')
-        return next(err)
-      }
-      console.log(user, err, info)
-      req.session.email = user.email
-      req.session.name = user.displayName
-      req.session.image = user.photos[0].value
-      res.redirect('/')
-    })(req, res, next)
-  });
+  // router.get('/loginFacebook/callback', (req, res, next) => {
+  //   passport.authenticate('facebook', (err, user, info) => {
+  //     if(err){
+  //       res.redirect('/login')
+  //       return next(err)
+  //     }
+  //     console.log(user, err, info)
+  //     req.session.email = user.email
+  //     req.session.name = user.displayName
+  //     req.session.image = user.photos[0].value
+  //     res.redirect('/')
+  //   })(req, res, next)
+  // });
+
+  router.get('/loginFacebook/callback', passport.authenticate('facebook', { successRedirect: '/',
+  failureRedirect: '/login' }))
 
   router.post('/logout', async (req,res,next) =>{
     try {
