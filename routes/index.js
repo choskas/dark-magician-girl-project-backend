@@ -10,7 +10,6 @@ const isLoggedIn = (req, res, next) => {
   res.redirect('/');
 }
 
-
 router.post('/signup', async (req,res,next) =>{
     try {
     const user = await User.register(req.body, req.body.password)
