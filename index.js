@@ -39,6 +39,19 @@ const connectDB = async () => {
 
 connectDB();
 
+// Static
+app.use(express.static(path.join(__dirname, 'public')));
+
+
+// Middlewares for DDoS and bruteforce attacks
+const limiter = new RateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100,
+  delayMs: 0,
+});
+
+app.use(limiter);
+
 // MONGO SESSION
 app.use(cookieParser());
 app.use(session({
@@ -53,21 +66,9 @@ app.use(session({
   })
 }));
 
-// Static
-app.use(express.static(path.join(__dirname, 'public')));
-
 // PASSPORT
 app.use(passport.initialize())
 app.use(passport.session())
-
-// Middlewares for DDoS and bruteforce attacks
-const limiter = new RateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100,
-  delayMs: 0,
-});
-
-app.use(limiter);
 
 
 // Routes
