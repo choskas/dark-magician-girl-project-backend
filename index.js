@@ -41,7 +41,7 @@ const connectDB = async () => {
 connectDB();
 
 // Static
-// app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 
 // Middlewares for DDoS and bruteforce attacks
