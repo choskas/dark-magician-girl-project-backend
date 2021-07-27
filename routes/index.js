@@ -86,6 +86,7 @@ router.post('/login', passport.authenticate('local'), async (req,res,next) =>{
 
   router.get('/profile', isAuth, (req, res, next) => {
     try {
+      console.log(req.user, 'user respuesta')
       let response = 'is not logged in'
       if(req.user) {
         response = 'is login'
