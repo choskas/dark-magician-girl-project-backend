@@ -18,7 +18,7 @@ app.use(express.urlencoded({extended: true}));
 app.use(express.json())
 app.use(
   cors({
-    credentials: true,
+    credentials: false,
     origin: ['http://localhost:3000', 'http://localhost:5000', 'https://dark-magician-girl-project.vercel.app', 'https://www.facebook.com'],
   }),
 );
@@ -48,6 +48,15 @@ const limiter = new RateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100,
   delayMs: 0,
+});
+
+  // Esto resuelve el pedo con los cors
+app.use(function (req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin', req.header('Origin'));
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  next();
 });
 
 app.use(limiter);
