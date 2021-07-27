@@ -49,7 +49,7 @@ router.post('/login', passport.authenticate('local'), async (req,res,next) =>{
     }
   })
 
-  router.get('/',
+  router.get('/loginFacebook/callback',
     passport.authenticate('facebook', { successRedirect: '/',
                                         failureRedirect: '/login' }));
 
