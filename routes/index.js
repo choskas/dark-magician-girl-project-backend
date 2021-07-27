@@ -2,7 +2,8 @@ const {Router} = require('express');
 const axios = require('axios')
 const passport = require('../config/passport')
 const router = Router();
-const User = require('../models/user')
+const User = require('../models/user');
+const facebookPassport = require('../config/facebookConfig');
 
 router.post('/signup', async (req,res,next) =>{
     try {
@@ -33,16 +34,17 @@ router.post('/login', passport.authenticate('local'), async (req,res,next) =>{
     }
   })
 
-  router.post('/loginFacebook', async (req,res,next) =>{
+  router.post('/loginFacebook', passport.authenticate('facebook') ,async (req,res,next) =>{
     try {
-    if(req.body.facebookId) {
-      const users = await User.find();
-      const foundUser = users.find((item) => item.facebookId === req.body.facebookId);
-      req.session.user = foundUser.email
-      req.session.name = foundUser.name
-      req.session.image = foundUser.image
-      res.status(200).json({email: foundUser.email, name: foundUser.name, image: foundUser.image})
-    } 
+    // if(req.body.facebookId) {
+    //   const users = await User.find();
+    //   const foundUser = users.find((item) => item.facebookId === req.body.facebookId);
+    //   req.session.user = foundUser.email
+    //   req.session.name = foundUser.name
+    //   req.session.image = foundUser.image
+    //   res.status(200).json({email: foundUser.email, name: foundUser.name, image: foundUser.image})
+    // } 
+      facebookPassport();
     } catch (error) {
         res.status(500).json({message: 'Error en credenciales'})
     }
