@@ -19,7 +19,8 @@ passport.deserializeUser(function(id, done) {
 passport.use(new FacebookStrategy({
   clientID: process.env.FACEBOOK_APP_ID,
   clientSecret: process.env.FACEBOOK_APP_SECRET,
-  callbackURL: process.env.ON_PROD == '1' ? process.env.FACEBOOK_CALLBACK_URL : 'http://localhost:3000/'
+  callbackURL: process.env.ON_PROD == '1' ? process.env.FACEBOOK_CALLBACK_URL : 'http://localhost:3000/',
+  passReqToCallback: true,
 }, (accessToken, refreshToken, profile, done) => {
   User.findOne({facebookId: profile.id}, (err, user) => {
     if (err) return done(err)
