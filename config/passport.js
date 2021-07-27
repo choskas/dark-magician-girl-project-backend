@@ -5,17 +5,6 @@ const FacebookStrategy = require("passport-facebook");
 passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
-
-passport.serializeUser(function (user, done) {
-  done(null, user._id);
-});
-passport.deserializeUser(function (id, done) {
-  User.findById(id, function (err, user) {
-    if (!err) done(null, user);
-    else done(err, null);
-  });
-});
-
 passport.use(
   new FacebookStrategy(
     {
@@ -57,5 +46,16 @@ passport.use(
     }
   )
 );
+
+passport.serializeUser(function (user, done) {
+  done(null, user._id);
+});
+passport.deserializeUser(function (id, done) {
+  console.log('pass deserializauser')
+  User.findById(id, function (err, user) {
+    if (!err) done(null, user);
+    else done(err, null);
+  });
+});
 
 module.exports = passport;
