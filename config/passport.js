@@ -20,7 +20,7 @@ passport.use(new FacebookStrategy({
   clientID: process.env.FACEBOOK_APP_ID,
   clientSecret: process.env.FACEBOOK_APP_SECRET,
   callbackURL: process.env.ON_PROD == '1' ? process.env.FACEBOOK_CALLBACK_URL : 'http://localhost:3000/',
-  passReqToCallback: true,
+  // passReqToCallback: true,
   profileFields: ['email','id', 'first_name', 'gender', 'last_name', 'picture'],
 }, (accessToken, refreshToken, profile, done) => {
   console.log(profile.displayName)
