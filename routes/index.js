@@ -84,15 +84,15 @@ router.post('/login', passport.authenticate('local'), async (req,res,next) =>{
     }
   })
 
-  router.get('/profile', (req, res, next) => {
+  router.get('/profile', async (req, res, next) => {
     try {
       console.log(req.user, 'user respuesta')
       let response = 'is not logged in'
       if(req.user) {
-        res.redirect(`${process.env.FACEBOOK_APP_URL}`)
         response = 'is login'
       }
       res.status(200).json({message: response})
+      res.redirect('https://google.com')
     } catch(error) {
       res.status(500).json({message: error})
     }
