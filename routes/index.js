@@ -87,6 +87,16 @@ router.post('/login', passport.authenticate('local'), async (req,res,next) =>{
         console.log(error)
     }
   })
+
+  router.get('/profile', (req, res , next) => {
+    try {
+    console.log(req.user, 'ola')
+    res.send(200).json({message: req.user})
+    } catch (error) {
+      console.log(error)
+      res.send(500).json({message: error})
+    }
+  })
   
 
 module.exports = router;
