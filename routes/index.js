@@ -40,7 +40,7 @@ router.post('/login', passport.authenticate('local'), async (req,res,next) =>{
   })
 
   router.get('/loginFacebook',
-  passport.authenticate('facebook', {scope: ['email','id', 'first_name', 'gender', 'last_name', 'picture']}));
+  passport.authenticate('facebook'));
 
   // router.get('/loginFacebook', passport.authenticate('facebook') ,async (req,res,next) =>{
   //   try {

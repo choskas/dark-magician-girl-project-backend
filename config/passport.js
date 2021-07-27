@@ -23,7 +23,7 @@ passport.use(new FacebookStrategy({
   // passReqToCallback: true,
   profileFields: ['email','id', 'first_name', 'gender', 'last_name', 'picture'],
 }, (accessToken, refreshToken, profile, done) => {
-  console.log(profile.displayName)
+  console.log(profile.id)
   // User.findOne({facebookId: profile.id}, (err, user) => {
   //   if (err) return done(err)
   //   if (user) return done(null, user)
