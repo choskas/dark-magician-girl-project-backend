@@ -4,6 +4,13 @@ const passport = require('../config/passport')
 const router = Router();
 const User = require('../models/user');
 
+const isLoggedIn = (req, res, next) => {
+  if (req.isAuthenticated())
+    return next();
+  res.redirect('/');
+}
+
+
 router.post('/signup', async (req,res,next) =>{
     try {
     const user = await User.register(req.body, req.body.password)
@@ -73,11 +80,5 @@ router.post('/login', passport.authenticate('local'), async (req,res,next) =>{
     });
   });
   
-
-  const isLoggedIn = (req, res, next) => {
-    if (req.isAuthenticated())
-      return next();
-    res.redirect('/');
-  }
 
 module.exports = router;
