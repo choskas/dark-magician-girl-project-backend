@@ -32,7 +32,7 @@ passport.use(new FacebookStrategy({
       newUser.facebookId = profile.id
       newUser.name = profile.name.givenName
       newUser.image = profile.photos[0].value
-      newUser.email = profile.email
+      newUser.email = profile.emails[0].value
 
       newUser.save((err) => {
         if(err) throw err
