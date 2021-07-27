@@ -24,22 +24,22 @@ passport.use(new FacebookStrategy({
   profileFields: ['email','id', 'first_name', 'gender', 'last_name', 'picture'],
 }, (accessToken, refreshToken, profile, done) => {
   console.log(profile.id, profile.email, profile)
-  // User.findOne({facebookId: profile.id}, (err, user) => {
-  //   if (err) return done(err)
-  //   if (user) return done(null, user)
-  //   else {
-  //     var newUser = new User()
-  //     newUser.facebookId = profile.id
-  //     newUser.name = profile.displayName
-  //     newUser.image = profile.photos[0].value
-  //     newUser.email = profile.email
+  User.findOne({facebookId: profile.id}, (err, user) => {
+    if (err) return done(err)
+    if (user) return done(null, user)
+    else {
+      var newUser = new User()
+      newUser.facebookId = profile.id
+      newUser.name = profile.name.givenName
+      newUser.image = profile.photos[0].value
+      newUser.email = profile.email
 
-  //     newUser.save((err) => {
-  //       if(err) throw err
-  //       return done(null, newUser)
-  //     })
-  //   }
-  // })
+      newUser.save((err) => {
+        if(err) throw err
+        return done(null, newUser)
+      })
+    }
+  })
 }))
 
 module.exports = passport
