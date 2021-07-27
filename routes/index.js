@@ -74,7 +74,13 @@ router.post('/login', passport.authenticate('local'), async (req,res,next) =>{
   })
 
   router.get('/profile', (req, res, next) => {
-    console.log(req.user)
+    try {
+      console.log(req.user)
+      res.send(200)
+    } catch (error) {
+      res.send(500).json({error})
+      console.log(error)
+    }
   })
   
 
