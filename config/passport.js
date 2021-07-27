@@ -21,6 +21,7 @@ passport.use(new FacebookStrategy({
   clientSecret: process.env.FACEBOOK_APP_SECRET,
   callbackURL: process.env.ON_PROD == '1' ? process.env.FACEBOOK_CALLBACK_URL : 'http://localhost:3000/',
   passReqToCallback: true,
+  profileFields: ['email','id', 'first_name', 'gender', 'last_name', 'picture'],
 }, (accessToken, refreshToken, profile, done) => {
   console.log(profile.displayName)
   // User.findOne({facebookId: profile.id}, (err, user) => {
