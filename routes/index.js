@@ -46,7 +46,7 @@ router.post('/login', passport.authenticate('local'), async (req,res,next) =>{
     // } 
       facebookPassport();
     } catch (error) {
-        res.status(500).json({message: 'Error en credenciales'})
+        res.status(500).json({message: error})
     }
   })
 
