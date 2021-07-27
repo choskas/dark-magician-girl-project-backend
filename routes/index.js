@@ -96,6 +96,19 @@ router.post('/login', passport.authenticate('local'), async (req,res,next) =>{
       res.status(500).json({message: error})
     }
   })
+
+  router.get('/auth', (req, res, next) => {
+    try {
+      console.log(req.user, 'user respuesta')
+      let response = 'is not logged in'
+      if(req.user) {
+        response = 'is login'
+      }
+      res.status(200).json({message: response})
+    } catch(error) {
+      res.status(500).json({message: error})
+    }
+  })
   
 
 module.exports = router;
