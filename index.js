@@ -49,8 +49,11 @@ const limiter = new RateLimit({
   max: 100,
   delayMs: 0,
 });
-
 app.use(limiter);
+// PASSPORT
+app.use(passport.initialize())
+app.use(passport.session())
+
 app.use(cookieParser())
 // MONGO SESSION
 app.use(session({
@@ -65,9 +68,7 @@ app.use(session({
   })
 }));
 
-// PASSPORT
-app.use(passport.initialize())
-app.use(passport.session())
+
 
 
 // Routes
