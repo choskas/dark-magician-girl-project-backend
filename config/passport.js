@@ -7,21 +7,21 @@ passport.use(new FacebookStrategy({
   clientSecret: process.env.FACEBOOK_APP_SECRET,
   callbackURL: process.env.ON_PROD == '1' ? process.env.FACEBOOK_CALLBACK_URL : 'http://localhost:3000/'
 }, (accessToken, refreshToken, profile, done) => {
-  const userFB = User.find(async(item) => {
-    if (item.facebookId === profile.id){
-      return item
-    } else {
-      const newUser = await User.create({
-        email: profile.email,
-        image: profile.picture,
-        facebookId: profile.id,
-        name: profile.displayName
+  User.findOne({facebookId: profile.id}, (err, user) => {
+    if (err) return done(err)
+    if (user) return done(null, user)
+    else {
+      var newUser = new User()
+      newUser.facebookId = profile.id
+      newUser.name = profile.displayName
+      newUser.image = profile.photos[0].value
+
+      newUser.save((err) => {
+        if(err) throw err
+        return done(null, newUser)
       })
-      done(null, user);
-      return newUser;
     }
   })
-  return userFB;
 }))
 
 passport.use(User.createStrategy())
