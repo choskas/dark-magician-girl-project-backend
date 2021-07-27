@@ -10,6 +10,7 @@ const mongoose = require('mongoose');
 const passport = require('./config/passport');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
+const cookieParser = require('cookie-parser');
 
 // Middlewares
 app.use(helmet());
@@ -55,6 +56,7 @@ const limiter = new RateLimit({
 app.use(limiter);
 
 // MONGO SESSION
+app.use(cookieParser());
 app.use(session({
   secret: process.env.SECRET_KEY,
   resave: false,
