@@ -33,22 +33,25 @@ router.post('/login', passport.authenticate('local'), async (req,res,next) =>{
     }
   })
 
-  router.get('/loginFacebook', passport.authenticate('facebook') ,async (req,res,next) =>{
-    try {
-    // if(req.body.facebookId) {
-    //   const users = await User.find();
-    //   const foundUser = users.find((item) => item.facebookId === req.body.facebookId);
-    //   req.session.user = foundUser.email
-    //   req.session.name = foundUser.name
-    //   req.session.image = foundUser.image
-    //   res.status(200).json({email: foundUser.email, name: foundUser.name, image: foundUser.image})
-    // } 
-    
-    } catch (error) {
-      console.log(error)
-        res.status(500).json({message: error})
-    }
-  })
+  router.get('/loginFacebook',
+  passport.authenticate('facebook'));
+
+  // router.get('/loginFacebook', passport.authenticate('facebook') ,async (req,res,next) =>{
+  //   try {
+  //   // if(req.body.facebookId) {
+  //   //   const users = await User.find();
+  //   //   const foundUser = users.find((item) => item.facebookId === req.body.facebookId);
+  //   //   req.session.user = foundUser.email
+  //   //   req.session.name = foundUser.name
+  //   //   req.session.image = foundUser.image
+  //   //   res.status(200).json({email: foundUser.email, name: foundUser.name, image: foundUser.image})
+  //   // } 
+
+  //   } catch (error) {
+  //     console.log(error)
+  //       res.status(500).json({message: error})
+  //   }
+  // })
 
   router.get('/loginFacebook/callback',
     passport.authenticate('facebook', { successRedirect: '/',
