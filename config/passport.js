@@ -43,12 +43,12 @@ passport.use(
 
 passport.serializeUser(function (user, cb) {
   console.log(user, 'serial')
-  cb(null, user);
+  cb(null, user._id);
 });
 
 passport.deserializeUser(function async (user, cb) {
   console.log(user, 'deseri')
-  User.findById(user._id, (err, user) => {
+  User.findById(user, (err, user) => {
     console.log(user, 'eluser');
     cb(null, user)
   });
