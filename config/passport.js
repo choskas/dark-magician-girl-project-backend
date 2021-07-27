@@ -22,7 +22,7 @@ passport.use(new FacebookStrategy({
   callbackURL: process.env.ON_PROD == '1' ? process.env.FACEBOOK_CALLBACK_URL : 'http://localhost:3000/',
   passReqToCallback: true,
 }, (accessToken, refreshToken, profile, done) => {
-  console.log(accesToken, profile)
+  console.log(accessToken, profile)
   // User.findOne({facebookId: profile.id}, (err, user) => {
   //   if (err) return done(err)
   //   if (user) return done(null, user)
