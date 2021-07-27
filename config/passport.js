@@ -26,8 +26,7 @@ passport.use(
     (accessToken, refreshToken, profile, done) => {
       User.findOne({ facebookId: profile.id }, (err, user) => {
         if (err) return done(err);
-        if (user)
-          return done(null, user);
+        if (user) return done(null, user);
         else {
           var newUser = new User();
           newUser.facebookId = profile.id;
@@ -46,13 +45,18 @@ passport.use(
 );
 
 passport.serializeUser(function (user, done) {
+  console.log(user, 'serialize')
   done(null, user._id);
 });
 passport.deserializeUser(function (id, done) {
-  console.log('pass deserializauser', id)
+  console.log("pass deserializauser", id);
   User.findById(id, function (err, user) {
-    if (!err) done(null, user);
-    else done(err, null);
+    if (!err) {
+      done(null, user);
+    } else {
+      done(err, null);
+      console.log(err, "err");
+    }
   });
 });
 
