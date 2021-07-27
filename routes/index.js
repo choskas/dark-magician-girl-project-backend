@@ -71,7 +71,7 @@ router.post('/login', passport.authenticate('local'), async (req,res,next) =>{
   //   })(req, res, next)
   // });
 
-  router.get('/loginFacebook/callback', passport.authenticate('facebook', { successRedirect: process.env.FACEBOOK_APP_URL,
+  router.get('/loginFacebook/callback', passport.authenticate('facebook', { successRedirect: 'https://dark-magician-girl-project.vercel.app/login',
   failureRedirect: process.env.FACEBOOK_CALLBACK_URL }))
 
   router.post('/logout', async (req,res,next) =>{
