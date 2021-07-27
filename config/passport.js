@@ -11,9 +11,11 @@ passport.deserializeUser(function (obj, done) {
   console.log(obj, 'deseri')
   User.findById(obj._id, function (err, user) {
     if (!err) {
+      console.log(user, 'el user')
       done(null, user);
     } else {
       done(err, null);
+      console.log(err, 'el err')
       console.log(err, "err");
     }
   });
