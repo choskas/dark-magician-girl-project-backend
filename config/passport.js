@@ -22,20 +22,21 @@ passport.use(new FacebookStrategy({
   callbackURL: process.env.ON_PROD == '1' ? process.env.FACEBOOK_CALLBACK_URL : 'http://localhost:3000/',
   passReqToCallback: true,
 }, (accessToken, refreshToken, profile, done) => {
+  console.log(profile)
   User.findOne({facebookId: profile.id}, (err, user) => {
     if (err) return done(err)
     if (user) return done(null, user)
     else {
-      var newUser = new User()
-      newUser.facebookId = profile.id
-      newUser.name = profile.displayName
-      newUser.image = profile.photos[0].value
-      newUser.email = profile.email
+      // var newUser = new User()
+      // newUser.facebookId = profile.id
+      // newUser.name = profile.displayName
+      // newUser.image = profile.photos[0].value
+      // newUser.email = profile.email
 
-      newUser.save((err) => {
-        if(err) throw err
-        return done(null, newUser)
-      })
+      // newUser.save((err) => {
+      //   if(err) throw err
+      //   return done(null, newUser)
+      // })
     }
   })
 }))
