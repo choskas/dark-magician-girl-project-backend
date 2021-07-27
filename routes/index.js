@@ -43,6 +43,7 @@ router.post('/login', passport.authenticate('local'), async (req,res,next) =>{
     //   req.session.image = foundUser.image
     //   res.status(200).json({email: foundUser.email, name: foundUser.name, image: foundUser.image})
     // } 
+    
     } catch (error) {
       console.log(error)
         res.status(500).json({message: error})
