@@ -1,6 +1,6 @@
 const passport = require("passport");
 const User = require("../models/user");
-const FacebookStrategy = require("passport-facebook").Strategy;
+const FacebookStrategy = require("passport-facebook");
 
 passport.use(
   new FacebookStrategy(
