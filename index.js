@@ -51,7 +51,7 @@ const limiter = new RateLimit({
 });
 
 app.use(limiter);
-
+app.use(cookieParser())
 // MONGO SESSION
 app.use(session({
   secret: process.env.SECRET_KEY,
