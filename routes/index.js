@@ -74,7 +74,9 @@ router.post('/login', passport.authenticate('local'), async (req,res,next) =>{
   // });
 
   router.get('/loginFacebook/callback', passport.authenticate('facebook', { successRedirect: process.env.FACEBOOK_APP_URL,
-  failureRedirect: process.env.FACEBOOK_CALLBACK_URL }))
+  failureRedirect: process.env.FACEBOOK_CALLBACK_URL }), (req, res, next) => {
+    console.log(req.user, '<<<<')
+  })
 
   router.post('/logout', async (req,res,next) =>{
     try {
