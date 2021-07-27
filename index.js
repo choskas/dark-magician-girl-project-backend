@@ -52,6 +52,10 @@ const limiter = new RateLimit({
 
 app.use(limiter);
 
+// PASSPORT
+app.use(passport.initialize())
+app.use(passport.session())
+
 // MONGO SESSION
 app.use(cookieParser());
 app.use(session({
@@ -65,10 +69,6 @@ app.use(session({
       autoRemove: 'native'
   })
 }));
-
-// PASSPORT
-app.use(passport.initialize())
-app.use(passport.session())
 
 
 // Routes
