@@ -71,7 +71,7 @@ router.post('/login', passport.authenticate('local'), async (req,res,next) =>{
   //   })(req, res, next)
   // });
 
-  router.get('/loginFacebook/callback', passport.authenticate('facebook', { successRedirect:'/auth',
+  router.get('/loginFacebook/callback', passport.authenticate('facebook', { successRedirect:`${process.env.FACEBOOK_APP_URL}/profile`,
   failureRedirect: process.env.FACEBOOK_CALLBACK_URL }))
 
   router.post('/logout', async (req,res,next) =>{
@@ -83,29 +83,12 @@ router.post('/login', passport.authenticate('local'), async (req,res,next) =>{
         console.log(error)
     }
   })
-let id;
-  router.get('/auth', (req, res, next) => {
-    try {
-      console.log(req.user, 'user respuesta')
-      let response = 'is not logged in'
-      if(req.user) {
-        response = 'is login'
-        id = req.user.facebookId
-      }
-      res.status(301).redirect(process.env.FACEBOOK_APP_URL)
-    } catch(error) {
-      res.status(500).json({message: error})
-    }
-  })
 
   router.get('/profile', (req, res, next) => {
     try {
-      console.log(req.user, 'user respuesta', id)
-      let response = 'is not logged in'
-      if(req.user) {
-        response = 'is login'
-      }
-      res.status(200).json({message: response})
+      if (req.user) {
+        res.json(req.user);
+    }
     } catch(error) {
       res.status(500).json({message: error})
     }

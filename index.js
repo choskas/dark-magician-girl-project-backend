@@ -20,6 +20,7 @@ app.use(
   cors({
     credentials: false,
     origin: ['http://localhost:3000', 'http://localhost:5000', 'https://dark-magician-girl-project.vercel.app', 'https://www.facebook.com'],
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   }),
 );
 
