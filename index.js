@@ -25,7 +25,7 @@ app.use(
 );
 
 // MONGO
-const uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_USER_PASSWORD}@cluster0.tl5qv.mongodb.net/${process.env.MONGO_DATABASE_NAME}?retryWrites=true&w=majority`;
+const uri = process.env.MONGO_DATABASE;
 const connectDB = async () => {
   try {
   await mongoose.connect(uri, {
