@@ -18,4 +18,9 @@ router.post('/signup', async (req,res,next) =>{
     }
   })
 
+router.get('/allCards', async (req,res,next) => {
+  const cards = await axios.get(`${process.env.YGO_API}/cardinfo.php?`);
+  res.status(200).json({cards: cards.data.data})
+})
+
 module.exports = router;
