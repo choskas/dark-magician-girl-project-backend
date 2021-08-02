@@ -19,6 +19,10 @@ const decksSchema = new Schema(
       type: String,
       default: 'https://m.media-amazon.com/images/I/51CrGxrLXFL._AC_.jpg'
     },
+    id: {
+      type: String,
+      required: true,
+    },
     email: {
       type: String,
       required: true,

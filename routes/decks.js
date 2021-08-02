@@ -4,12 +4,13 @@ const Deck = require("../models/decks");
 
 router.post("/create", async (req, res, next) => {
   try {
-    const { deckName, deckType, deck, mainCard, email, deckPrice } = req.body;
+    const { deckName, deckType, deck, mainCard, id, deckPrice, email } = req.body;
     await Deck.create({
       deckName,
       deckType,
       deck,
       mainCard,
+      id,
       email,
       deckPrice,
     });
@@ -22,7 +23,7 @@ router.post("/create", async (req, res, next) => {
 
 router.post("/getAllUserDecks", async (req, res, next) => {
   try {
-    const decks = await Deck.find({email: req.body.email})
+    const decks = await Deck.find({id: req.body.id})
     res.status(200).json({message: 'Decks encontrados', decks})
   } catch (error) {
     console.log(error);
@@ -32,7 +33,7 @@ router.post("/getAllUserDecks", async (req, res, next) => {
 
 router.delete("/deleteDeck", async (req, res, next) => {
   try {
-    const decks = await Deck.findOneAndDelete({email: req.body.email, deckName: req.body.deckName})
+    const decks = await Deck.findOneAndDelete({id: req.body.id})
     res.status(200).json({message: 'Deck eliminado'})
   } catch (error) {
     console.log(error);
