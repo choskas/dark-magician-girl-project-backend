@@ -31,7 +31,7 @@ router.post('/selectRole', async (req, res, next) => {
     const id = new ObjectID(req.body.id); 
     const collection = await client.db(process.env.MONGO_DB_NAME).collection('users');
     const user = await collection.findOneAndUpdate({_id: id}, {$set: {role: req.body.role}})
-    req.status('200').json({message: `Todo ha salido bien, redirigiendo!`})
+    res.status('200').json({message: `Todo ha salido bien, redirigiendo!`})
     client.close()
   } catch (error) {
     console.log(error)

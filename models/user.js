@@ -15,7 +15,7 @@ const userSchema = new Schema(
     facebookId: {
       type: String,
       required: false,
-      unique: true,
+      unique: false,
     },
     image:{
       type: String,
