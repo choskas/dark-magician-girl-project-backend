@@ -43,14 +43,11 @@ passport.use(
 );
 
 passport.serializeUser(function (user, cb) {
-  console.log(user, "serial");
   cb(null, user.facebookId);
 });
 
 passport.deserializeUser(function async(obj, cb) {
-  console.log(obj, "deseri");
   User.findOne({ facebookId: obj }, (err, user) => {
-    console.log(user, "eluser");
     if (!err) cb(null, user)
     if (err) cb(err, null)
   });
