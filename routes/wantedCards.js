@@ -4,7 +4,7 @@ const WantedCards = require("../models/wantedCards");
 
 router.post("/add", async (req, res, next) => {
   try {
-    const { userId, card } = req.body;
+    const { userId, card, name, email } = req.body;
     const getAllWantedCards = await WantedCards.find();
     const exist = await getAllWantedCards.find((item) => {
         if (item && item.userId === userId) {
@@ -18,6 +18,8 @@ router.post("/add", async (req, res, next) => {
     } else {
     await WantedCards.create({
       userId,
+      email,
+      name,
       cards: [card],
       isFound: false
     });
