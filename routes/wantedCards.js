@@ -53,11 +53,14 @@ router.get("/getAllWantedCards", async (req, res , next) => {
 
 router.put("/foundCard", async (req, res , next) => {
   try {
-    const {userId, rarityCode} = req.body;
+    const {userId, rarityCode, price} = req.body;
     const card = await WantedCards.findOneAndUpdate({userId, 'cards.rarityCode': rarityCode}, 
       {
         $set: {
           'cards.$.isFound': true,
+        },
+        $set: {
+          'cards.$.price': price,
         }
       },
     )
