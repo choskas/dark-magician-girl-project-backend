@@ -51,16 +51,32 @@ router.get("/getAllWantedCards", async (req, res , next) => {
   }
 })
 
+router.post("/getAllWantedCardsById", async (req,res,next) => {
+  try {
+    const {userId} = req.body;
+    const foundCardsById = await WantedCards.findOne({userId})
+    if (foundCardsById) {
+    res.status(200).json({cards: foundCardsById.cards});
+    }
+    res.status(200).json({cards: []});
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({message: error})
+  }
+})
+
 router.put("/foundCard", async (req, res , next) => {
   try {
-    const {userId, rarityCode, price} = req.body;
+    const {userId, rarityCode, price, foundBy, foundByName} = req.body;
     const card = await WantedCards.findOneAndUpdate({userId, 'cards.rarityCode': rarityCode}, 
       {
         $set: {
           'cards.$.isFound': true,
-        },
-        $set: {
           'cards.$.price': price,
+        },
+        $push: {
+          'cards.$.foundBy': {foundById: foundBy, foundByName: foundByName},
         }
       },
     )
