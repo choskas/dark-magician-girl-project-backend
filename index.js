@@ -63,6 +63,7 @@ app.use(passport.session())
 app.use(require('./routes/index'));
 app.use('/deck', require('./routes/decks'));
 app.use('/wantedCards', require('./routes/wantedCards'));
+app.use('/store', require('./routes/store'));
 // Websocket (si se necesitan)
 app.use(require('./routes/websockets'));
 
