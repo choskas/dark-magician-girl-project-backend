@@ -39,7 +39,6 @@ router.post("/selectRole", async (req, res, next) => {
       { $set: { role: req.body.role } }
     );
     res.status("200").json({ message: `Todo ha salido bien, redirigiendo!` });
-    client.close();
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: error });
@@ -86,7 +85,6 @@ router.put("/storeExtraInfo", async (req, res, next) => {
       }
     );
     res.status(200).json({ message: "Registro exitoso" });
-    await client.close();
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: error });
@@ -111,7 +109,6 @@ router.post("/getStoreById", async (req, res, next) => {
           storeName: user.storeName,
         },
       });
-    await client.close();
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: error });
