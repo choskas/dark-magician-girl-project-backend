@@ -57,8 +57,9 @@ router.post("/getAllWantedCardsById", async (req,res,next) => {
     const foundCardsById = await WantedCards.findOne({userId})
     if (foundCardsById) {
     res.status(200).json({cards: foundCardsById.cards});
-    }
+    } else {
     res.status(200).json({cards: []});
+    }
 
   } catch (error) {
     console.log(error);
@@ -73,10 +74,9 @@ router.put("/foundCard", async (req, res , next) => {
       {
         $set: {
           'cards.$.isFound': true,
-          'cards.$.price': price,
         },
         $push: {
-          'cards.$.foundBy': {foundById: foundBy, foundByName: foundByName},
+          'cards.$.foundBy': {foundById: foundBy, foundByName: foundByName, price},
         }
       },
     )
