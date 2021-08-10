@@ -3,7 +3,7 @@ const axios = require("axios");
 const passport = require("../config/passport");
 const router = Router();
 const User = require("../models/user");
-const client = require("../db/dbConnect");
+const {client} = require("../db/dbConnect");
 const ObjectID = require("mongodb").ObjectID;
 
 const isAuth = (req, res, next) => {
@@ -29,7 +29,6 @@ router.get("/allCards", async (req, res, next) => {
 
 router.post("/selectRole", async (req, res, next) => {
   try {
-    await client.connect();
     const id = new ObjectID(req.body.id);
     const collection = await client
       .db(process.env.MONGO_DB_NAME)
@@ -42,13 +41,11 @@ router.post("/selectRole", async (req, res, next) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: error });
-    client.close();
   }
 });
 
 router.put("/storeExtraInfo", async (req, res, next) => {
   try {
-    await client.connect();
     const {
       storeName,
       street,
@@ -88,13 +85,11 @@ router.put("/storeExtraInfo", async (req, res, next) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: error });
-    await client.close();
   }
 });
 
 router.post("/getStoreById", async (req, res, next) => {
   try {
-    await client.connect();
     const id = await new ObjectID(req.body.id);
     const collection = await client
       .db(process.env.MONGO_DB_NAME)
@@ -112,7 +107,6 @@ router.post("/getStoreById", async (req, res, next) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: error });
-    await client.close();
   }
 });
 

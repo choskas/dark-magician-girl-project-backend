@@ -5,11 +5,11 @@ const cors = require('cors');
 const helmet = require('helmet');
 const RateLimit = require('express-rate-limit');
 const app = express();
-const mongoose = require('mongoose');
 const passport = require('./config/passport');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const cookieParser = require('cookie-parser');
+const {connectDB} = require('./db/dbConnect');
 
 // Middlewares
 app.use(helmet());
@@ -23,20 +23,6 @@ app.use(
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   }),
 );
-
-// MONGO
-const uri = process.env.MONGO_DATABASE;
-const connectDB = async () => {
-  try {
-  await mongoose.connect(uri, {
-    useUnifiedTopology: true,
-    useNewUrlParser: true,
-  })
-  console.log('db connected')
-} catch (error) {
-  console.log(error)
-}
-}
 
 connectDB();
 
@@ -55,6 +41,7 @@ app.use(limiter);
 app.set("trust proxy", 1);
 app.use(cookieParser())
 // MONGO SESSION
+const uri = process.env.MONGO_DATABASE;
 app.use(session({
   secret: process.env.SECRET_KEY,
   resave: true,
