@@ -4,7 +4,7 @@ const router = Router();
 const StoreCards = require("../models/storeCards");
 const ObjectID = require("mongodb").ObjectID;
 
-router.get('/getAllUniqueCardsById', async (req, res, next) => {
+router.post('/getAllUniqueCardsById', async (req, res, next) => {
     try {
         const {userId} = req.body;
         const cards = await StoreCards.findOne({userId})
