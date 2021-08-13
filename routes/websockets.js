@@ -1,27 +1,26 @@
-const {Router} = require('express');
-const router = Router();
-const WebSocket = require('ws');
+const { Server } = require("socket.io");
+const socketIoServer = (server) => {
+const io = new Server(server,  {
+  cors: {
+    origin: '*',
+  }
+});
+let connectedUsers = [];
 
-const wss = new WebSocket.Server({ port: 8082 });
-wss.on('connection', (ws) => {
-  console.log('New client connected!');
-
-  ws.on('message', async (data) => {
-    console.log(data);
+io.on('connection', (socket) => {
+  socket.on('disconnect', () =>
+     console.log(`Disconnected: ${socket.id}`));
+  socket.on('join', (room) => {
+     socket.join(room.userId);
   });
-  ws.on('close', () => {
-    console.log('Client disconnected ');
+  socket.on('foundCard', (data) => {
+    const {userId, card} = data;
+    if (data) {
+    socket.to(userId).emit('getFoundCard', `Han encontrado tu carta: ${card.name}`)
+    }
+    
   });
 });
+};
 
-router.post('/websocket-example', async (req, res, next) => {
-    await wss.clients.forEach(async (client) => {
-      if (client.readyState === WebSocket.OPEN) {
-        console.log('passsssssssssssss')
-       // Lo que debe hacer el websocket aqui
-      }
-    });
-    return res.send('websocket');
-  });
-
-module.exports = router;
+module.exports = socketIoServer

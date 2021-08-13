@@ -5,11 +5,14 @@ const cors = require('cors');
 const helmet = require('helmet');
 const RateLimit = require('express-rate-limit');
 const app = express();
-const passport = require('./config/passport');
+const http = require('http');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const cookieParser = require('cookie-parser');
 const {connectDB} = require('./db/dbConnect');
+const server = http.createServer(app);
+const socketIoServer = require('./routes/websockets');
+
 
 // Middlewares
 app.use(helmet());
@@ -54,21 +57,16 @@ app.use(session({
   })
 }));
 
-// PASSPORT
-app.use(passport.initialize())
-app.use(passport.session())
-
-
 // Routes
 app.use(require('./routes/index'));
 app.use('/deck', require('./routes/decks'));
 app.use('/wantedCards', require('./routes/wantedCards'));
 app.use('/store', require('./routes/store'));
 // Websocket (si se necesitan)
-app.use(require('./routes/websockets'));
+socketIoServer(server);
 
 // Listen server
 const PORT = process.env.PORT || 3001;
-app.listen(PORT || 3001, () => {
+server.listen(PORT || 3001, () => {
   console.log('listening on port ', PORT);
 });
