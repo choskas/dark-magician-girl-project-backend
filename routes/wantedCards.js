@@ -14,6 +14,17 @@ router.post("/add", async (req, res, next) => {
         }
     })
     if (exist) {
+        const cardExist = await WantedCards.findOne({userId});
+        const isExistCard = cardExist.cards.find((item) => {
+          if (item.rarityCode === card.rarityCode) {
+            return true
+          } else {
+            return false
+          }
+        } )
+        if (isExistCard) {
+          return res.status(402).json({message: 'La carta ya esta en tus busquedas'})
+        }
         await WantedCards.findOneAndUpdate({userId}, { $push: { cards: card }},)
     } else {
     await WantedCards.create({
@@ -70,6 +81,30 @@ router.post("/getAllWantedCardsById", async (req,res,next) => {
 router.put("/foundCard", async (req, res , next) => {
   try {
     const {userId, rarityCode, price, foundBy, foundByName} = req.body;
+    const cardAlreadyFound = await WantedCards.findOne({userId});
+    if (cardAlreadyFound) {
+      const foundCardItem = cardAlreadyFound.cards.find((item) => {
+        if (item.rarityCode === rarityCode) {
+          return item;
+        } else {
+          return false;
+        }
+      });
+      let alreadyFoundBy = false;
+      if (foundCardItem.foundBy) {
+      alreadyFoundBy = foundCardItem.foundBy.find((item) => {
+        if (item.foundById === foundBy) {
+          return true;
+        } else {
+          return false;
+        }
+      })
+    }
+      if (alreadyFoundBy) {
+        return res.status(402).json({message: 'Ya se ha notificado al usuario'})
+      }
+    }
+
     const card = await WantedCards.findOneAndUpdate({userId, 'cards.rarityCode': rarityCode}, 
       {
         $set: {
