@@ -20,6 +20,13 @@ io.on('connection', (socket) => {
     }
     
   });
+  socket.on('foundBase', (data) => {
+    const {id, deckName} = data;
+    if (data) {
+    socket.to(id).emit('getFoundCard', `Han encontrado tu base: ${deckName}`)
+    }
+    
+  });
 });
 };
 

@@ -23,6 +23,18 @@ const decksSchema = new Schema(
       type: String,
       required: true,
     },
+    isWanted: {
+      type: Boolean,
+      default: false,
+    },
+    isFound: {
+      type: Boolean,
+      defaul: false,
+    },
+    foundBy: {
+      type: Array,
+      default: [],
+    },
     email: {
       type: String,
       required: true,

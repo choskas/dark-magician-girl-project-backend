@@ -61,6 +61,7 @@ app.use(session({
 app.use(require('./routes/index'));
 app.use('/deck', require('./routes/decks'));
 app.use('/wantedCards', require('./routes/wantedCards'));
+app.use('/wantedBases', require('./routes/wantedBases'));
 app.use('/store', require('./routes/store'));
 // Websocket (si se necesitan)
 socketIoServer(server);
