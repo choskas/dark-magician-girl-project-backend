@@ -13,6 +13,13 @@ router.post("/add", async (req, res, next) => {
             return false;
         }
     })
+    const existItems = await getAllWantedCards.map((item) => {
+      if (item && item.userId === userId) {
+          return item;
+      } else {
+          return [];
+      }
+  })
     if (exist) {
         const cardExist = await WantedCards.findOne({userId});
         const isExistCard = cardExist.cards.find((item) => {
@@ -24,6 +31,9 @@ router.post("/add", async (req, res, next) => {
         } )
         if (isExistCard) {
           return res.status(402).json({message: 'La carta ya esta en tus busquedas'})
+        }
+        if (existItems.length <= 14){
+          return res.status(402).json({message: 'No puedes agregar mas cartas, borra alguna.'})
         }
         await WantedCards.findOneAndUpdate({userId}, { $push: { cards: card }},)
     } else {

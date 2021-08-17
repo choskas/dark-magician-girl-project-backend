@@ -7,6 +7,9 @@ router.post("/create", async (req, res, next) => {
   try {
     const { deckName, deckType, deck, mainCard, id, deckPrice, email } =
       req.body;
+    const getAllDecksById = await Deck.find({id});
+    console.log(getAllDecksById.length, 'zz')
+    if (getAllDecksById.length <= 9) {
     await Deck.create({
       deckName,
       deckType,
@@ -16,7 +19,10 @@ router.post("/create", async (req, res, next) => {
       email,
       deckPrice,
     });
-    res.status(200).json({ message: "Deck creado" });
+    return res.status(200).json({ message: "Deck creado" });
+  } else {
+    return res.status(402).json({message: "No puedes crear mas decks borra alguno."})
+  }
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Error al guardar el deck" });
@@ -58,26 +64,16 @@ router.post("/getAllUserDecks", async (req, res, next) => {
   }
 });
 
-router.delete("/deleteDeck", async (req, res, next) => {
+router.post("/deleteDeck", async (req, res, next) => {
   try {
-    const decks = await Deck.findOneAndDelete({ id: req.body.id });
-    res.status(200).json({ message: "Deck eliminado" });
+    const { _id } = req.body;
+    await Deck.findByIdAndDelete({_id});
+    return res.status(200).json({ message: "Deck borrado." });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: "Error al eliminar deck" });
+    res.status(500).json({ message: "Error al borrar deck" });
   }
 });
-
-// TODO
-// router.put("/editDeck", async (req, res, next) => {
-//   try {
-//     const decks = await Deck.findOneAndUpdate({email: req.body.email, deckName: req.body.deckName})
-//     res.status(200).json({message: 'Deck eliminado'})
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({ message: "Error al eliminar deck" });
-//   }
-// })
 
 router.post("/addToWantedCards");
 
