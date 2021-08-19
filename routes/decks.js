@@ -2,6 +2,7 @@ const { Router } = require("express");
 const router = Router();
 const Deck = require("../models/decks");
 const StoreCards = require("../models/storeCards");
+const ObjectID = require("mongodb").ObjectID;
 
 router.post("/create", async (req, res, next) => {
   try {
@@ -33,10 +34,11 @@ router.post("/createDeckBase", async (req, res, next) => {
   try {
     const { deckName, deckPrice, deck, mainCard, userId, email } = req.body;
     const getStore = await StoreCards.find({userId});
+    const deckId = new ObjectID()
     if (getStore.length >= 1){
     await StoreCards.findOneAndUpdate(
       { userId },
-      { $push: {decksBases: { deckName, deckPrice, deck, mainCard } }  }
+      { $push: {decksBases: {deckId, deckName, deckPrice, deck, mainCard } }  }
     );
       return res.status(200).json({ message: "Base guardada" });
     } else {
@@ -44,7 +46,7 @@ router.post("/createDeckBase", async (req, res, next) => {
         userId,
         email,
         uniqueCards: [],
-        decksBases: [{ deckName, deckPrice, deck, mainCard }],
+        decksBases: [{deckId, deckName, deckPrice, deck, mainCard }],
       });
       return res.status(200).json({ message: "Base guardada" });
     }
@@ -53,6 +55,18 @@ router.post("/createDeckBase", async (req, res, next) => {
     res.status(500).json({ message: "Error al guardar la base" });
   }
 });
+
+router.post("/deleteDeckBase", async (req,res,next) => {
+  try {
+    const {userId, deckId} = req.body;
+    const card = await StoreCards.findOneAndUpdate({userId},{ $pull: { 'deckBases.$.deckId': deckId } } );
+    res.status(200).json({message: 'Base borrada.'});
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({message: error})
+  }
+})
 
 router.post("/getAllUserDecks", async (req, res, next) => {
   try {

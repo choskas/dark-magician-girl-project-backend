@@ -58,4 +58,17 @@ router.put('/deleteUniqueCard', async (req, res, next) => {
     }
 })
 
+router.post("/deleteDeckBase", async (req,res,next) => {
+    try {
+      const {userId, deckId} = req.body;
+      const newDeckId = new ObjectID(deckId);
+      const card = await StoreCards.findOneAndUpdate({userId},{ $pull: { 'decksBases': {deckId: newDeckId} } } );
+      res.status(200).json({message: 'Base borrada.'});
+  
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({message: error})
+    }
+  })
+
 module.exports = router;

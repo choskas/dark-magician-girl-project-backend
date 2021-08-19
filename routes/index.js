@@ -77,6 +77,50 @@ router.put("/storeExtraInfo", async (req, res, next) => {
   }
 });
 
+router.put("/updateStoreExtraInfo", async (req, res, next) => {
+  try {
+    const {
+      storeName,
+      street,
+      postalCode,
+      number,
+      city,
+      facebookLink,
+      instagramLink,
+      twitterLink,
+      phoneNumber,
+    } = req.body;
+    const id = await new ObjectID(req.body.id);
+    const collection = await client
+      .db(process.env.MONGO_DB_NAME)
+      .collection("users");
+    const user = await collection.findOneAndUpdate(
+      { _id: id },
+      {
+        $set: {
+          storeName,
+          address: {
+            street,
+            postalCode,
+            number,
+            city,
+          },
+          contact: {
+            facebookLink,
+            instagramLink,
+            twitterLink,
+            phoneNumber,
+          },
+        },
+      }
+    );
+    res.status(200).json({ message: "La información sera actualziada la proxima vez que inicies sesión" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error });
+  }
+});
+
 router.post("/getStoreById", async (req, res, next) => {
   try {
     const id = await new ObjectID(req.body.id);

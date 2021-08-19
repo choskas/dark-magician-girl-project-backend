@@ -132,4 +132,16 @@ router.put("/foundCard", async (req, res , next) => {
   }
 })
 
+router.put("/deleteWantedCard", async (req,res,next) => {
+  try {
+    const {userId, rarityCode} = req.body;
+    const card = await WantedCards.findOneAndUpdate({userId},{ $pull: { 'cards': {rarityCode} } } );
+    res.status(200).json({message: 'Carta borrada.'});
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({message: error})
+  }
+})
+
 module.exports = router;
