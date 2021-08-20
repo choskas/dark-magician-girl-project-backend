@@ -35,6 +35,9 @@ router.post("/createDeckBase", async (req, res, next) => {
     const { deckName, deckPrice, deck, mainCard, userId, email } = req.body;
     const getStore = await StoreCards.find({userId});
     const deckId = new ObjectID()
+    if (getStore[0].decksBases.length >= 20) {
+      return res.status(402).json({message: 'No puedes guardar mas bases borra alguna'})
+    }
     if (getStore.length >= 1){
     await StoreCards.findOneAndUpdate(
       { userId },
@@ -55,18 +58,6 @@ router.post("/createDeckBase", async (req, res, next) => {
     res.status(500).json({ message: "Error al guardar la base" });
   }
 });
-
-router.post("/deleteDeckBase", async (req,res,next) => {
-  try {
-    const {userId, deckId} = req.body;
-    const card = await StoreCards.findOneAndUpdate({userId},{ $pull: { 'deckBases.$.deckId': deckId } } );
-    res.status(200).json({message: 'Base borrada.'});
-
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({message: error})
-  }
-})
 
 router.post("/getAllUserDecks", async (req, res, next) => {
   try {

@@ -28,6 +28,30 @@ router.post('/addUniqueCard', async (req, res, next) => {
         }
         return isExist
     })
+    const existItem = getAllStores.map((item) => {
+        let isExist;
+        if (item && item.userId === userId) {
+            isExist = item;
+        } else {
+            isExist = false;
+        }
+        return isExist
+    })
+    if (existItem[0].uniqueCards.length >= 20) {
+        return res.status(402).json({message: 'No puedes guardar mas cartas, borra alguna'})
+    }
+    const alreadyHaveIt = getAllStores.find((item) => {
+        let haveIt = false;
+        if (item && item.userId === userId) {
+           haveIt = item.uniqueCards.find((n) => n.rarityCode === card.rarityCode)
+        } else {
+            haveIt = false;
+        }
+        return haveIt
+    })
+    if (alreadyHaveIt){
+        return res.status(402).json({message: 'Ya tienes esta carta en tu perfil'})
+    }
     const id = mongoose.Types.ObjectId();
     if (exist) {
         await StoreCards.findOneAndUpdate({userId}, { $push: { uniqueCards: {cardId: id,...card} }},)

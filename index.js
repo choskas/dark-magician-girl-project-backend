@@ -22,7 +22,7 @@ app.use(express.json())
 app.use(
   cors({
     credentials: true,
-    origin: ['http://localhost:3000', 'http://localhost:5000', 'https://dark-magician-girl-project.vercel.app', 'https://www.facebook.com'],
+    origin: ['http://localhost:3000', 'http://localhost:5000', 'https://dark-magician-girl-project.vercel.app', 'https://www.facebook.com', 'https://www.cardsseeker.com', 'https://cardsseeker.com'],
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   }),
 );
@@ -58,11 +58,11 @@ app.use(session({
 }));
 
 // Routes
-app.use(require('./routes/index'));
-app.use('/deck', require('./routes/decks'));
-app.use('/wantedCards', require('./routes/wantedCards'));
-app.use('/wantedBases', require('./routes/wantedBases'));
-app.use('/store', require('./routes/store'));
+app.use('/api', require('./routes/index'));
+app.use('/api/deck', require('./routes/decks'));
+app.use('/api/wantedCards', require('./routes/wantedCards'));
+app.use('/api/wantedBases', require('./routes/wantedBases'));
+app.use('/api/store', require('./routes/store'));
 // Websocket (si se necesitan)
 socketIoServer(server);
 
