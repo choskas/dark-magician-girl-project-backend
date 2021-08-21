@@ -37,7 +37,7 @@ router.post('/addUniqueCard', async (req, res, next) => {
         }
         return isExist
     })
-    if (existItem[0].uniqueCards.length >= 20) {
+    if (exist && existItem[0].uniqueCards.length >= 20) {
         return res.status(402).json({message: 'No puedes guardar mas cartas, borra alguna'})
     }
     const alreadyHaveIt = getAllStores.find((item) => {
