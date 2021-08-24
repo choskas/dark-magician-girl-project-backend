@@ -4,6 +4,16 @@ const router = Router();
 const StoreCards = require("../models/storeCards");
 const ObjectID = require("mongodb").ObjectID;
 
+router.get('/getAllStoresDecksAndCards', async (req, res, next) => {
+    try {
+        const allStoreDecksDecksAndCards = await StoreCards.find()
+        res.status(200).json({stores: allStoreDecksDecksAndCards})
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({message: error})
+    }
+})
+
 router.post('/getAllUniqueCardsById', async (req, res, next) => {
     try {
         const {userId} = req.body;
@@ -28,7 +38,7 @@ router.post('/addUniqueCard', async (req, res, next) => {
         }
         return isExist
     })
-    const existItem = getAllStores.map((item) => {
+    const existItem = getAllStores.find((item) => {
         let isExist;
         if (item && item.userId === userId) {
             isExist = item;
@@ -37,7 +47,7 @@ router.post('/addUniqueCard', async (req, res, next) => {
         }
         return isExist
     })
-    if (exist && existItem[0].uniqueCards.length >= 20) {
+    if (exist && existItem.uniqueCards.length >= 20) {
         return res.status(402).json({message: 'No puedes guardar mas cartas, borra alguna'})
     }
     const alreadyHaveIt = getAllStores.find((item) => {
