@@ -68,7 +68,7 @@ router.post('/addUniqueCard', async (req, res, next) => {
     } else {
     await StoreCards.create({
       userId,
-      email,
+      email: email ? email : '',
       uniqueCards: [{cardId: id, ...card}],
       deckBases: [],
     });

@@ -14,7 +14,6 @@ const storeCardsSchema = new Schema(
     },
     email: {
       type: String,
-      required: true,
     }
   },
  

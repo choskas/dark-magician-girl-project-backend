@@ -17,7 +17,7 @@ router.post("/create", async (req, res, next) => {
       deck,
       mainCard,
       id,
-      email,
+      email: email ? email : '',
       deckPrice,
     });
     return res.status(200).json({ message: "Deck creado" });
@@ -47,7 +47,7 @@ router.post("/createDeckBase", async (req, res, next) => {
     } else {
       await StoreCards.create({
         userId,
-        email,
+        email: email ? email : '',
         uniqueCards: [],
         decksBases: [{deckId, deckName, deckPrice, deck, mainCard }],
       });

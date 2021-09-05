@@ -40,7 +40,7 @@ router.post("/add", async (req, res, next) => {
     } else {
     await WantedCards.create({
       userId,
-      email,
+      email: email ? email : '',
       name,
       cards: [card],
     });
@@ -59,7 +59,7 @@ router.get("/getAllWantedCards", async (req, res , next) => {
       return user.cards.map((card) => {
         return {
           userId: user.userId ,
-          email: user.email,
+          email: user.email ? user.email : '',
           name: user.name,
           card: {image: card.image, rarityCode: card.rarityCode, name: card.name}
         }

@@ -37,7 +37,6 @@ const decksSchema = new Schema(
     },
     email: {
       type: String,
-      required: true,
     }
   },
  
