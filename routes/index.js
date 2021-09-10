@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const axios = require("axios");
 const router = Router();
-const {client} = require("../db/dbConnect");
+const { client } = require("../db/dbConnect");
 const ObjectID = require("mongodb").ObjectID;
 
 const isAuth = (req, res, next) => {
@@ -9,7 +9,6 @@ const isAuth = (req, res, next) => {
     ? next()
     : res.status(401).json({ msg: "Log in first" });
 };
-
 
 router.get("/allCards", async (req, res, next) => {
   const cards = await axios.get(`${process.env.YGO_API}/cardinfo.php?`);
@@ -114,7 +113,12 @@ router.put("/updateStoreExtraInfo", async (req, res, next) => {
         },
       }
     );
-    res.status(200).json({ message: "La información sera actualziada la proxima vez que inicies sesión" });
+    res
+      .status(200)
+      .json({
+        message:
+          "La información sera actualziada la proxima vez que inicies sesión",
+      });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: error });
@@ -128,15 +132,23 @@ router.post("/getStoreById", async (req, res, next) => {
       .db(process.env.MONGO_DB_NAME)
       .collection("users");
     const user = await collection.findOne({ _id: id });
-    res
-      .status("200")
-      .json({
-        store: {
-          address: user.address,
-          contact: user.contact,
-          storeName: user.storeName,
-        },
-      });
+    res.status("200").json({
+      store: {
+        address: user.address,
+        contact: user.contact,
+        storeName: user.storeName,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error });
+  }
+});
+
+router.get("/getAllArchetypes", async (req, res, next) => {
+  try {
+    const response = await axios.get(`${process.env.YGO_API}/archetypes.php`);
+    res.status(200).json({archetypes: response.data});
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: error });
