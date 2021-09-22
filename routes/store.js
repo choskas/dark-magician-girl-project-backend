@@ -106,9 +106,9 @@ router.post('/fastAddUniqueCard', async (req, res, next) => {
         return res.status(402).json({message: 'No puedes guardar mas cartas, borra alguna'})
     }
     
-    const id = mongoose.Types.ObjectId();
     if (exist) {
         const cardsArray = cards.map((item) => {
+            const id = mongoose.Types.ObjectId();
             return {
                 cardId: id,
                 name: item.name,
@@ -119,6 +119,7 @@ router.post('/fastAddUniqueCard', async (req, res, next) => {
        await StoreCards.findOneAndUpdate({userId}, { $push: { uniqueCards: { "$each": cardsArray } }},)
     } else {
     const cardsArray = cards.map((item) => {
+        const id = mongoose.Types.ObjectId();
         return {
             cardId: id,
             name: item.name,
@@ -133,7 +134,7 @@ router.post('/fastAddUniqueCard', async (req, res, next) => {
       deckBases: [],
     });
     }
-    res.status(200).json({message: 'Carta agregada!'})
+    res.status(200).json({message: 'Cartas agregadas!'})
 } catch (error) {
     console.log(error);
     res.status(500).json({message: error})
