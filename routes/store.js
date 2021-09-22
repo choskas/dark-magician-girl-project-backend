@@ -47,7 +47,7 @@ router.post('/addUniqueCard', async (req, res, next) => {
         }
         return isExist
     })
-    if (exist && existItem.uniqueCards.length >= 20) {
+    if (exist && existItem.uniqueCards.length >= 80) {
         return res.status(402).json({message: 'No puedes guardar mas cartas, borra alguna'})
     }
     const alreadyHaveIt = getAllStores.find((item) => {
@@ -79,6 +79,67 @@ router.post('/addUniqueCard', async (req, res, next) => {
     res.status(500).json({message: error})
 }
 })
+
+router.post('/fastAddUniqueCard', async (req, res, next) => {
+    try {
+    const {cards, userId, email} = req.body;
+    const getAllStores = await StoreCards.find();
+    const exist = getAllStores.find((item) => {
+        let isExist;
+        if (item && item.userId === userId) {
+            isExist = true;
+        } else {
+            isExist = false;
+        }
+        return isExist
+    })
+    const existItem = getAllStores.find((item) => {
+        let isExist;
+        if (item && item.userId === userId) {
+            isExist = item;
+        } else {
+            isExist = false;
+        }
+        return isExist
+    })
+    if (exist && existItem.uniqueCards.length >= 80) {
+        return res.status(402).json({message: 'No puedes guardar mas cartas, borra alguna'})
+    }
+    
+    const id = mongoose.Types.ObjectId();
+    if (exist) {
+        const cardsArray = cards.map((item) => {
+            return {
+                cardId: id,
+                name: item.name,
+                rarityCode: item.rarityCode,
+                image: item.image,
+            }
+        });
+       await StoreCards.findOneAndUpdate({userId}, { $push: { uniqueCards: { "$each": cardsArray } }},)
+    } else {
+    const cardsArray = cards.map((item) => {
+        return {
+            cardId: id,
+            name: item.name,
+            rarityCode: item.rarityCode,
+            image: item.image,
+        }
+    })
+    await StoreCards.create({
+      userId,
+      email: email ? email : '',
+      uniqueCards: cardsArray,
+      deckBases: [],
+    });
+    }
+    res.status(200).json({message: 'Carta agregada!'})
+} catch (error) {
+    console.log(error);
+    res.status(500).json({message: error})
+}
+})
+
 
 router.put('/deleteUniqueCard', async (req, res, next) => {
     try {
