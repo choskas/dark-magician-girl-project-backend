@@ -1,8 +1,16 @@
 const { Router } = require("express");
 const mongoose = require('mongoose');
+const fs = require('fs')
+const util = require('util')
+const unlinkFile = util.promisify(fs.unlink)
 const router = Router();
 const StoreCards = require("../models/storeCards");
 const ObjectID = require("mongodb").ObjectID;
+const { client } = require("../db/dbConnect");
+const multer = require('multer');
+const upload = multer({dest: 'storeProfilesImages/'})
+const {uploadFile, getFile, putFile} = require('../config/s3Config');
+
 
 router.get('/getAllStoresDecksAndCards', async (req, res, next) => {
     try {
@@ -165,6 +173,75 @@ router.post("/deleteDeckBase", async (req,res,next) => {
       console.log(error);
       res.status(500).json({message: error})
     }
-  })
+  });
+
+  router.post('/postStoreImage', upload.single('storeProfileImage'), async (req, res, next) => {
+    try {
+        const file = req.file;
+        const userId = await new ObjectID(req.body.userId);
+        const imageKey = req.body.imageKey;
+        if (imageKey !== 'undefined') {
+            await putFile(imageKey, file);
+            await unlinkFile(file.path)
+            res.status(200).json({message: 'Imagen cambiada con exito!', imageKey})
+            return;
+        }
+        const result = await uploadFile(file);
+        const collection = await client
+        .db(process.env.MONGO_DB_NAME)
+        .collection("users");
+        await unlinkFile(file.path)
+        const dbResponse = await collection.findOneAndUpdate({_id: userId},       {
+            $set: {
+              storeProfileImageKey: result.Key
+            },
+          });
+        res.status(200).json({message: 'Imagen agregada con exito!', imageKey: result.Key})
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({message: error})
+    }
+})
+
+router.post('/getStoreImage',  async (req, res, next) => {
+    try {
+        const { imageKey } = req.body;
+        const readStream = await getFile(imageKey);
+        res.status(200).send({image: readStream})
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({message: error})
+    }
+})
+
+router.post(
+    "/upload",
+    upload.single("storeProfileImage" /* name attribute of <file> element in your form */),
+    (req, res) => {
+      const tempPath = req.file.path;
+      const targetPath = path.join(__dirname, "./uploads/image.png");
+  
+      if (path.extname(req.file.originalname).toLowerCase() === ".png") {
+        fs.rename(tempPath, targetPath, err => {
+          if (err) return handleError(err, res);
+  
+          res
+            .status(200)
+            .contentType("text/plain")
+            .end("File uploaded!");
+        });
+      } else {
+        fs.unlink(tempPath, err => {
+          if (err) return handleError(err, res);
+  
+          res
+            .status(403)
+            .contentType("text/plain")
+            .end("Only .png files are allowed!");
+        });
+      }
+    }
+  );
+
 
 module.exports = router;

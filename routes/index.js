@@ -137,6 +137,7 @@ router.post("/getStoreById", async (req, res, next) => {
         address: user.address,
         contact: user.contact,
         storeName: user.storeName,
+        storeProfileImageKey: user.storeProfileImageKey,
       },
     });
   } catch (error) {

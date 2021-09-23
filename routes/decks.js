@@ -9,7 +9,6 @@ router.post("/create", async (req, res, next) => {
     const { deckName, deckType, deck, mainCard, id, deckPrice, email } =
       req.body;
     const getAllDecksById = await Deck.find({id});
-    console.log(getAllDecksById.length, 'zz')
     if (getAllDecksById.length <= 9) {
     await Deck.create({
       deckName,
