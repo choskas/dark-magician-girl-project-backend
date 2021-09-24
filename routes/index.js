@@ -3,6 +3,17 @@ const axios = require("axios");
 const router = Router();
 const { client } = require("../db/dbConnect");
 const ObjectID = require("mongodb").ObjectID;
+const multer = require('multer');
+const fileStorageSystem = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'public/images/' )
+  },
+  filename: (req, file, cb) => {
+    console.log(req.body, 'body');
+    cb(null, file.originalname)
+  }
+})
+const upload = multer({storage: fileStorageSystem })
 
 const isAuth = (req, res, next) => {
   req.isAuthenticated()
@@ -155,5 +166,23 @@ router.get("/getAllArchetypes", async (req, res, next) => {
     res.status(500).json({ message: error });
   }
 });
+
+  router.post('/uploadProfileImage', upload.single('storeProfileImage') ,async (req, res, next) => {
+    try {
+      const fileData = req.file;
+      const userId = await new ObjectID(req.body.userId);
+      const collection = await client
+      .db(process.env.MONGO_DB_NAME)
+      .collection("users");
+      const dbResponse = await collection.findOneAndUpdate({_id: userId},       {
+          $set: {
+            storeProfileImageKey: fileData.filename
+          },
+        });
+      res.status(200).json({message: 'Imagen cambiada con exito!', imageKey: fileData.filename})
+    } catch (error) {
+      console.log(error)
+    }
+  })
 
 module.exports = router;
