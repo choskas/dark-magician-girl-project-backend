@@ -9,7 +9,6 @@ const fileStorageSystem = multer.diskStorage({
     cb(null, 'public/images/' )
   },
   filename: (req, file, cb) => {
-    console.log(req.body, 'body');
     cb(null, file.originalname)
   }
 })
@@ -148,7 +147,7 @@ router.post("/getStoreById", async (req, res, next) => {
         address: user.address,
         contact: user.contact,
         storeName: user.storeName,
-        storeProfileImageKey: user.storeProfileImageKey,
+        profileImageKey: user.profileImageKey,
       },
     });
   } catch (error) {
@@ -167,7 +166,7 @@ router.get("/getAllArchetypes", async (req, res, next) => {
   }
 });
 
-  router.post('/uploadProfileImage', upload.single('storeProfileImage') ,async (req, res, next) => {
+  router.post('/uploadProfileImage', upload.single('profileImage') ,async (req, res, next) => {
     try {
       const fileData = req.file;
       const userId = await new ObjectID(req.body.userId);
@@ -176,12 +175,50 @@ router.get("/getAllArchetypes", async (req, res, next) => {
       .collection("users");
       const dbResponse = await collection.findOneAndUpdate({_id: userId},       {
           $set: {
-            storeProfileImageKey: fileData.filename
+            profileImageKey: fileData.filename
           },
         });
       res.status(200).json({message: 'Imagen cambiada con exito!', imageKey: fileData.filename})
     } catch (error) {
       console.log(error)
+      res.status(500).json({message: error})
+    }
+  })
+
+  router.post('/uploadProfileImageDuelist', upload.single('profileImage') ,async (req, res, next) => {
+    try {
+      const fileData = req.file;
+      const userId = await new ObjectID(req.body.userId);
+      const collection = await client
+      .db(process.env.MONGO_DB_NAME)
+      .collection("users");
+      const dbResponse = await collection.findOneAndUpdate({_id: userId},       {
+          $set: {
+            profileImageKey: fileData.filename
+          },
+        });
+      res.status(200).json({message: 'Imagen cambiada con exito!', imageKey: fileData.filename})
+    } catch (error) {
+      console.log(error)
+      res.status(500).json({message: error})
+    }
+  })
+
+  router.post('/updateArchetype',async (req, res, next) => {
+    try {
+      const userId = await new ObjectID(req.body.userId);
+      const collection = await client
+      .db(process.env.MONGO_DB_NAME)
+      .collection("users");
+      const dbResponse = await collection.findOneAndUpdate({_id: userId},       {
+          $set: {
+            favouriteArchetype: req.body.favouriteArchetype
+          },
+        });
+      res.status(200).json({message: 'Arquetipo cambiado con exito!'})
+    } catch (error) {
+      console.log(error)
+      res.status(500).json({message: error})
     }
   })
 

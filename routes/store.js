@@ -4,6 +4,7 @@ const router = Router();
 const StoreCards = require("../models/storeCards");
 const ObjectID = require("mongodb").ObjectID;
 const multer = require('multer');
+const { client } = require('../db/dbConnect')
 const upload = multer({dest: 'storeProfilesImages/'})
 
 
@@ -169,5 +170,27 @@ router.post("/deleteDeckBase", async (req,res,next) => {
       res.status(500).json({message: error})
     }
   });
+
+router.post("/getAllStores", async (req, res, next) => {
+    try {
+        const collection = await client
+        .db(process.env.MONGO_DB_NAME)
+        .collection("users");
+        const getStoresArray = await collection.find({role: "store"}).toArray();
+        const stores = getStoresArray.map((item) => {
+            return {
+                id: item._id,
+                storeName: item.storeName,
+                city: item.address.city,
+                contact: item.contact,
+                profileImageKey: item.profileImageKey
+            }
+        })
+        res.status(200).json({stores})
+        } catch (error) {
+        console.log(error)
+        res.status(500).json({message: error})
+    }
+})
 
 module.exports = router;
