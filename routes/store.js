@@ -171,7 +171,7 @@ router.post("/deleteDeckBase", async (req,res,next) => {
     }
   });
 
-router.post("/getAllStores", async (req, res, next) => {
+router.get("/getAllStores", async (req, res, next) => {
     try {
         const collection = await client
         .db(process.env.MONGO_DB_NAME)
