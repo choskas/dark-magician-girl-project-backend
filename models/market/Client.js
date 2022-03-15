@@ -8,6 +8,9 @@ const clientSchema = new Schema({
     lastName: {
         type: String
     },
+    email: {
+        type: String,
+    },
     image: {
         type: String,
     },

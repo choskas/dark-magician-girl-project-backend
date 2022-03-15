@@ -2,6 +2,9 @@ const { Schema, model } = require('mongoose')
 const mongoose = require('mongoose');
 
 const stockCardSchema = new Schema({
+    id: {
+        type: Number
+    },
     name: {
         type: String
     },
@@ -26,26 +29,11 @@ const stockCardSchema = new Schema({
     attribute: {
         type: String
     },
-    setCode: {
-        type: String
+    sets: {
+        type: Array
     },
     images: {
         type: Array
-    },
-    quantity: {
-        type: String
-    },
-    price: {
-        type: String
-    },
-    rarity: {
-        type: String
-    },
-    rarityCode: {
-        type: String
-    },
-    setName: {
-        type: String
     },
   lastUpdateAt: {
     type: Date,
