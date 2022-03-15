@@ -63,6 +63,9 @@ app.use('/api/deck', require('./routes/decks'));
 app.use('/api/wantedCards', require('./routes/wantedCards'));
 app.use('/api/wantedBases', require('./routes/wantedBases'));
 app.use('/api/store', require('./routes/store'));
+app.use('/api/market', require('./routes/market/index'));
+app.use('/api/market/stock', require('./routes/market/stock'));
+app.use('/api/market/client', require('./routes/market/client'));
 // Websocket (si se necesitan)
 socketIoServer(server);
 
